@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Big red button</title>
+    <style>
+      * { 
+        margin: 0; 
+        padding: 0; 
+        box-sizing: border-box; 
+      }
+      body { 
+        font: 200% Helvetica, Arial;
+      }
+
+      #login input, #login button {
+        height: 5em;
+        width: 20em;
+      }
+
+      #admin {
+        margin-top: 5em;
+      }
+
+      #login button {
+        width: 5em;
+      }
+
+      #list { 
+        margin: 0; 
+        padding: 2em 0; 
+      }
+      
+      #list li { 
+        padding: 1em 2em; 
+      }
+
+      #list li:nth-child(odd) { 
+        background: #eee; 
+      }
+
+      #button, #reset {
+        width: 10em;
+        height: 3em;
+        margin: auto;
+        background: #e84343;
+        color: #ffffff;
+        font-size: 2em;
+      }
+
+      #button:disabled {
+        background: #64696d;
+      }
+
+      #reset {
+        background: #3570a8;
+        display: none;
+      }
+
+      .center {
+        text-align: center;
+        padding-top: 1em;
+      }
+
+      #logged-in {
+        display: none;
+      }
+
+    </style>
+  </head>
+  <body>
+
+  <div class="center">
+    <form id="login">
+      <input type="text" id="name">
+      <button type="submit">Ok</button>
+
+      <p>
+        <button type="button" id="admin">I'm the admin</button>
+      </p>
+    </form>
+
+    <div id="logged-in">
+      <button id="button">The button</button>
+      <button id="reset">Reset</button>
+      
+      <ol id="list"></ol>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  <script>
+    var socket = io();
+
+    var button = $('#button');
+    var reset = $('#reset');
+    var list = $('#list');
+    var login = $('#login');
+    var admin = $('#admin');
+
+    login.submit(function() {
+      $('#login').hide();
+      $('#logged-in').show();
+
+      return false;
+    });
+
+    admin.click(function() {
+      login.submit();
+      button.hide();
+      reset.show();
+    });
+
+    button.click(function() {
+      socket.emit('clicked', $('#name').val());
+      
+      button.attr('disabled', true);
+    });
+
+    reset.click(function() {
+      socket.emit('reset', true);
+    });
+
+    socket.on('clicked', function(name) {
+      list.append($('<li>').html(name));
+    });
+
+    socket.on('reset', function(name) {
+      list.html('');
+
+      button.attr('disabled', false);
+    });
+  </script>
+  </body>
+</html>

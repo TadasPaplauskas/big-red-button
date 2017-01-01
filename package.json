@@ -1,0 +1,21 @@
+{
+  "name": "big-red-button",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "socket.io": "^1.7.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tadas Paplauskas",
+  "license": "ISC",
+  "repository" :
+    { 
+      "type" : "git",
+      "url" : "https://github.com/TadasPaplauskas/big-red-button.git"
+    }
+}
